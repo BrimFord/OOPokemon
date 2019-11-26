@@ -3,10 +3,10 @@ import java.util.*;
 
 public class Score{
 	
-	private Scanner input;
+	private static Scanner input;
 	private Formatter output;
 	private String score;
-	private ArrayList<String> playerList = new ArrayList<String>(10);
+	private ArrayList<Player> playerList = new ArrayList<Player>(10);
 	private ArrayList<Integer> scoreList = new ArrayList<Integer>(10);
 	
 	public void setScore(String score) {
@@ -18,7 +18,7 @@ public class Score{
 	}
 	
 	//load all the data from score file by calling the openInputFile(), readScoreFile() and closeInputFile() methods
-	public void loadScore() {
+	public static void loadScore() {
 		input = openInputFile("score.txt");
 		//readScoreFile();
 		closeInputFile(input);
@@ -32,7 +32,7 @@ public class Score{
 	}
 	
 	//open the score.txt file for reading
-	public Scanner openInputFile(String filename) {
+	public static Scanner openInputFile(String filename) {
 		Scanner tempinput = null;
 		try {
 			tempinput = new Scanner(new File(filename));
@@ -58,7 +58,7 @@ public class Score{
 	}
 	
 	//close the input file
-	public void closeInputFile(Scanner input) {
+	public static void closeInputFile(Scanner input) {
 		if (input != null)
 			input.close();
 	}
