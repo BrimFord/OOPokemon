@@ -1,5 +1,6 @@
 public class AttackingPokemon extends PokemonCard {
-	private int ATKPoint = 1;
+	
+private int ATKPoint = 1;
 	
 	
 	public AttackingPokemon(int stage, int experience, int HP, int energy, String energyColour, String status, int ATKPoint) {
@@ -19,6 +20,12 @@ public class AttackingPokemon extends PokemonCard {
 			this.ATKPoint *= 2;
 		}
 	}
+
+
+	@Override
+	public String toString() {
+		return String.format("AttackingPokemon %s ATKPoint=%s\n",super.toString(), ATKPoint);
+	}
 	
-	
+
 }

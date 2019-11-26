@@ -1,6 +1,7 @@
 
-public class DefendingPokemon extends PokemonCard{
-	private int RSTPoint = 1;
+public class DefendingPokemon extends PokemonCard {
+	
+private int RSTPoint = 1;
 	
 	
 	public DefendingPokemon(int stage, int experience, int HP, int energy, String energyColour, String status, int RSTPoint) {
@@ -20,5 +21,8 @@ public class DefendingPokemon extends PokemonCard{
 		this.RSTPoint = RSTPoint;
 	}
 	
+	@Override
+	public String toString() {
+		return String.format("DefendingPokemon %s RSTPoint=%s\n",super.toString(), RSTPoint);
+	}
 	
-}

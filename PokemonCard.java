@@ -76,10 +76,12 @@ public class PokemonCard {
 		Status = status;
 	}
 	
-	public void Attack(PokemonCard DefendPoke, int AttackScore)
+	public void Attack(PokemonCard DefendPoke, int AttackScore,int energyused)
 	{
-		int newHP = DefendPoke.getHP() -1;
+		int newHP = (DefendPoke.getHP() - AttackScore);
 		DefendPoke.setHP(newHP);
+		this.setEnergy(energyused);
+		
 	}
 	
 	public void Train(PokemonCard TrainedPoke) {
@@ -90,6 +92,14 @@ public class PokemonCard {
 		RechargePoke.setEnergy(5);
 		
 	}
+
+
+	@Override
+	public String toString() {
+		return String.format(" [Stage=%s, Experience=%s, HP=%s, Energy=%s, EnergyColour=%s, Status=%s]",
+				Stage, Experience, HP, Energy, EnergyColour, Status);
+	}
+	
 	
 	
 	

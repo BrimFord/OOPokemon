@@ -1,16 +1,21 @@
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
 public class Game {
-	private Player p1;
-	private Player p2;
+	private static int token =1;
+	private Player p1 = new Player();
+	private Player p2 = new Player();
+	private PokemonCardDeck Deck1 = new PokemonCardDeck();
+	private static ArrayList<PokemonCard> hand1 = new ArrayList();
+	private static ArrayList<PokemonCard> hand2 = new ArrayList();
+	
 
 	//deck
 	Scanner input = new Scanner(System.in);	
 	
 	public void start() {
 		int choice=0;
-
 		System.out.print("Key in the name for player 1: ");
 		p1.setName(input.next());
 		System.out.println();
@@ -21,8 +26,8 @@ public class Game {
 		
 		while (choice==0) {
 			System.out.println("Choose option:");
-			System.out.println("/t1. Start game");
-			System.out.println("/t2. Display top 10 scores");
+			System.out.println("\t1. Start game");
+			System.out.println("\t2. Display top 10 scores");
 			System.out.print("Option: ");
 			choice = input.nextInt();
 			System.out.println();
@@ -39,7 +44,7 @@ public class Game {
 					}
 					break;
 				case 2:
-					Score.loadScore();
+					//Score.loadScore();
 					break;
 				
 				default:
@@ -49,13 +54,51 @@ public class Game {
 			
 		}
 	}
+	public void displayCards() {
+		
+		System.out.println("Player 1 Pokemon");
+		System.out.println("Pokemon Number , Type, Stage, Experience, HP, Energy,EnergyColour,Status \n ");
+		for(PokemonCard p : hand1) {
+			System.out.printf("%d	%s \t %d \t %d \t %d \t %d \t %s \t %s \t \n",hand1.indexOf(p)+1, p.getClass(),p.getStage(),p.getExperience(),p.getHP(),p.getEnergy(),p.getEnergyColour(),p.getStatus());
+		}
+		
+		System.out.println("Player 2 Pokemon");
+		System.out.println("Pokemon Number , Type, Stage, Experience, HP, Energy,EnergyColour,Status \n ");
+		
+		for(PokemonCard i : hand2) {
+			System.out.printf("%d	%s \t %d \t %d \t %d \t %d \t %s \t %s \t \n",hand2.indexOf(i)+1, i.getClass(),i.getStage(),i.getExperience(),i.getHP(),i.getEnergy(),i.getEnergyColour(),i.getStatus());
+		}
+		
+		
+	}
+		
 	
 	public void drawCard() {
+		
+		Deck1.deck();
+		Deck1.shuffle();	
 		System.out.println("Drawing the card for Player 1...");
 		p1.setnoOfCard(6);
+		p1.setHand();
+		hand1 = p1.getHand();
+		System.out.printf("%s",p1.getHand());
 		System.out.println("Drawing the card for Player 2...");
 		p2.setnoOfCard(6);
+		p2.setHand();
+		hand2 = p2.getHand();
+		displayCards();
+		
+		
 	}
+		
+		
+			
+		
+			
+			
+			
+		
+	
 	
 	public void chooseOption(Player player, Player comparePlayer) {
 		while (true) {
@@ -67,10 +110,10 @@ public class Game {
 		System.out.println();
 		
 		System.out.print("Choose Pokemon: ");
-		int i = input.nextInt();
+		int i = input.nextInt() -1 ;
+		PokemonCard poke1 = hand1.get(i);
 		System.out.println();
-		checkStatus(i);
-		if (checkStatus(i)==true) {
+		if (checkStatus(poke1)==false) {
 				System.out.print(", please choose another Pokemon.");
 				break;
 		}
@@ -81,9 +124,15 @@ public class Game {
 				case 1: //Attack
 					//sigh
 					System.out.print("Attack Pokemon: ");
-					int j = input.nextInt();
+					int j = input.nextInt() -1;
+					PokemonCard poke2 = hand2.get(j);
 					System.out.println();
-								attackPokemon(player, i, comparePlayer, j);
+					if (token%2==1) {
+					attackPokemon(hand1,hand2,poke1,poke2);
+					}
+					else {
+						attackPokemon(hand2,hand1,poke1,poke2);
+					}
 					break;
 				
 				case 2: //Recharge
@@ -117,9 +166,16 @@ public class Game {
 		}
 	}
 	
-	public boolean comparePokemon(int i, int j) {
+	public boolean comparePokemon(PokemonCard i, PokemonCard j) {
 		checkStatus(j);
-		if (checkStatus(j) == true) {  //|| get type equal
+		
+		if ((j instanceof AttackingPokemon) && (i instanceof AttackingPokemon)) {  //|| get type equal
+			return true;
+		}
+		else if ((j instanceof DefendingPokemon) && (i instanceof DefendingPokemon)) {  //|| get type equal
+			return true;
+		}
+		else if ((j instanceof FairyPokemon) && (i instanceof FairyPokemon)) {  //|| get type equal
 			return true;
 		}
 		else 
@@ -128,86 +184,67 @@ public class Game {
 		}
 	}
 	
-	public boolean checkStatus(int i) {
-		//if status != active
-		System.out.print("Pokemon " + i + " is ???"); //??? = getStatus
-		return true;
+	public boolean checkStatus(PokemonCard i) {
+		if (i.getStatus().equals("Active")){
+			return true;
+		}
+		else {
+			return false;
+		}
+		
 		//else return false;
 	}
 	
-	public void attackPokemon(Player p, int i, Player cp, int j) {
+	public void attackPokemon(ArrayList attackhand, ArrayList defendhand,PokemonCard i, PokemonCard j) {
 		//sigh cast pokemon
-/*		int reducept=1;
+		int energyused = -1;
+		int multiplier = 1;
+		int reducept=0;
 		int damagept=1;
-		if (comparePokemon(i,j)==true) {
+		if (comparePokemon(i,j)) {
 			System.out.println("Weakness: on, double attack point");
-			reducept = 2;
-			
-			if (p == attacking pokemon) {
-				damagept = getattackpt * 2;
-				}
-			else if (p == defending pokemon) { 
-				if (cp == defending pokemon && coin()==true && checkStatus(j)==false) {
-					System.out.println("[Flip a coin: head] resistance point is getresistancept");
-					damagept = 2 - resistancept
-				}
-				else {
-					damagept = 2;
-				}
-			}
-			else if (p == fairy && coin()==true) {
-				System.out.println("[Flip a coin: head] Pokemon " + j + " is poisoned");
-				damagept = 2;
-			}
-			else if (p== fairy && coin()==false) {
-				System.out.println("[Flip a coin: tail] Pokemon " + j + " is paralyzed");
-				damagept = 2;
-			}
-			else {
-				damagept = 2;
-			}
+			multiplier *= 2;
+			energyused = -2;
 		}
-		
 		else {
 			System.out.println("Weakness: off");
-			reducept = 1;
-			if (p == attacking pokemon && coin()==true) {
-				System.out.println("[Flip a coin: head] attack point is getattackpoint");
-				damagept = getattackpt;
-				if (cp == defending pokemon && coin()==true) {
-					System.out.println("[Flip a coin: head] resistance point is getresistancept");
-					damagept = getattackpt - resistancept;
-				}
-			}
-			else if (p == fairy && coin()==true) {
-				System.out.println("[Flip a coin: head] Pokemon " + j + " is poisoned");
-				damagept == 1;
-					if (cp == defending pokemon && coin()==true) {
-					System.out.println("[Flip a coin: head] resistance point is getresistancept");
-					damagept = damagept - resistancept;
-				}
-			}
-			else if (p == fairy && coin()==false) {
-				System.out.println("[Flip a coin: tail] Pokemon " + j + " is paralyzed");
-				damagept = 1;
-					if (cp == defending pokemon && coin()==true) {
-					System.out.println("[Flip a coin: head] resistance point is getresistancept");
-					damagept = damagept - resistancept; }
-			else {
-				damagept = 1;
-				}
-	
 		}
+			
+		if (i instanceof AttackingPokemon) {
+			AttackingPokemon AttackPoke =(AttackingPokemon) i;
+			if (coin()) {
+				damagept = AttackPoke.getATKPoint();
+			}
+			}
+		else if (i instanceof FairyPokemon && coin()) {
+			System.out.println("[Flip a coin: head] Pokemon " + j + " is poisoned");
+			j.setStatus("Poisoned");
 		}
+		else if (i instanceof FairyPokemon && coin()==false) {
+			System.out.println("[Flip a coin: tail] Pokemon " + j + " is paralyzed");
+			j.setStatus("Paralyzed");
+			
+		}
+		
+		if (j.getStatus().equals("Poisoned") ||(j.getStatus().equals("Paralyzed"))) {
+			multiplier *= 2;}
+		if (j instanceof DefendingPokemon) { 
+			DefendingPokemon DefendPoke = (DefendingPokemon) j;
+			if (coin()) {
+				System.out.println("[Flip a coin: head] resistance point is getresistancept");
+				reducept =  DefendPoke.getRSTPoint();
+						}
+			}
+		damagept = (damagept * multiplier) - reducept;
 		if (damagept < 0) {
 			damagept=0;
 		}
 		
-		System.out.print("HitPoint for Pokemon " + j);
+		System.out.print("HitPoint for Pokemon " + defendhand.indexOf(j)+1);
 		System.out.printf(" damaged by %d", damagept);
-		//comparePlayer setHP(damagept);
-		System.out.print("Energy for Pokemon " + i);
-		System.out.printf(" reduced by %d", reducept);
+		System.out.print("Energy for Pokemon " + attackhand.indexOf(i)+1);
+		System.out.printf(" reduced by %d", energyused);
+		i.Attack(j, damagept,energyused);
 		//player setHP(reducept);
 		//player experience(1);
 		//if (player experience > 20){
@@ -235,4 +272,5 @@ public class Game {
 			return false;
 		}
 	}
+
 }
