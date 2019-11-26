@@ -1,11 +1,20 @@
 import java.util.Arrays;
 
+import java.util.ArrayList;
+
 public class Player {
+	
 	private String name;
 	private int noOfCard;
-	private PokemonCard[] hand = new PokemonCard[6];
-	//private static ArrayList<PokemonCard> card1 = new ArrayList<PokemonCard>();
+	private static ArrayList<PokemonCard> hand;
 	private Score score;
+	
+	
+
+	public Player() {
+		this.name = "none";
+		this.noOfCard = 0;
+	}
 
 	public String getName() {
 		return name;
@@ -30,35 +39,17 @@ public class Player {
 	public void setScore(Score score) {
 		this.score = score;
 	}
-	
-	public PokemonCard getHand(int i) {
-		return hand[i];
+
+	public static ArrayList getHand() {
+		return hand;
 	}
 
-	public void setHand(PokemonCard[] hand) {
-		
-		this.hand = PokemonCardDeck.deal(); 
-
+	public void setHand() {
+		hand=PokemonCardDeck.deal();
 	}
 
-	/*public static PokemonCard getCard1(int i) {
-		return card1.get(i);
-	}
 
-	public static void setCard1(ArrayList<PokemonCard> card1) {
-		card1.add(PokemonCardDeck.deal());
-		card1.add(PokemonCardDeck.deal());
-		card1.add(PokemonCardDeck.deal());
-		card1.add(PokemonCardDeck.deal());
-		card1.add(PokemonCardDeck.deal());
-		card1.add(PokemonCardDeck.deal());
-	}
-	*/
-
-	@Override
-	public String toString() {
-		return String.format("Player [hand=%s]", Arrays.toString(hand));
-	}
+}
 
 	
 
