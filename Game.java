@@ -56,23 +56,41 @@ public class Game {
 			
 		}
 	}
-	public void displayCards() {
+	public void displayCards() { //a method for display for hands of both players 
 		System.out.println();
+		String type;
 		System.out.println("Player 1 Pokemon");
-		System.out.println("PokeNum  	Type	  	Stage Experience  HP 	Energy	 Status \tEnergyColour \n ");
+		System.out.println("PokeNum Type	  	Stage Experience HP 	Energy	 Status \tEnergyColour \n ");
 		for(PokemonCard p : hand1) {
-			System.out.printf("%d	%s \t %d \t %d \t %d \t %d \t %s \t %s \t \n",hand1.indexOf(p)+1, p.getClass(),p.getStage(),p.getExperience(),p.getHP(),p.getEnergy(),p.getStatus(),p.getEnergyColour());
+			if(p instanceof AttackingPokemon) {
+				type = "Attacking";
+			}
+			else if (p instanceof DefendingPokemon){
+				type = "Defending";
+			}
+			else {
+				type = "Fairy    ";
+			}
+			
+			System.out.printf("%d	%s \t %d \t %d \t %d \t %d \t %s \t %s \t \n",hand1.indexOf(p)+1, type,p.getStage(),p.getExperience(),p.getHP(),p.getEnergy(),p.getStatus(),p.getEnergyColour());
 		}
 		System.out.println();
 		System.out.println("Player 2 Pokemon");
-		System.out.println("PokeNum  	Type	  	Stage Experience  HP 	Energy	 Status \tEnergyColour \n ");
+		System.out.println("PokeNum	Type	  	Stage Experience HP 	Energy	 Status \tEnergyColour \n ");
 		
 		for(PokemonCard i : hand2) {
-			System.out.printf("%d	%s \t %d \t %d \t %d \t %d \t %s \t %s \t \n",hand2.indexOf(i)+1, i.getClass(),i.getStage(),i.getExperience(),i.getHP(),i.getEnergy(),i.getStatus(),i.getEnergyColour());
+			if(i instanceof AttackingPokemon) {
+				type = "Attacking";
+			}
+			else if (i instanceof DefendingPokemon){
+				type = "Defending";
+			}
+			else {
+				type = "Fairy    ";
+			}
+			System.out.printf("%d	%s \t %d \t %d \t %d \t %d \t %s \t %s \t \n",hand2.indexOf(i)+1, type,i.getStage(),i.getExperience(),i.getHP(),i.getEnergy(),i.getStatus(),i.getEnergyColour());
 		}
-		
-		
-	}
+		}
 		
 	
 	public void drawCard() {
