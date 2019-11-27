@@ -6,6 +6,7 @@ public class FairyPokemon extends PokemonCard{
 		super(stage, experience, HP, energy, energyColour, status);
 
 	}
+	
 
 	
 }

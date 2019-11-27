@@ -1,11 +1,13 @@
+
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
 public class Game {
-	private static int token =1;
+	private static int token =1; // to determine who is playing 
 	private Player p1 = new Player();
 	private Player p2 = new Player();
+	private RechargeCardDeck EnerDeck1 = new RechargeCardDeck();
 	private PokemonCardDeck Deck1 = new PokemonCardDeck();
 	private static ArrayList<PokemonCard> hand1 = new ArrayList();
 	private static ArrayList<PokemonCard> hand2 = new ArrayList();
@@ -57,13 +59,13 @@ public class Game {
 	public void displayCards() {
 		
 		System.out.println("Player 1 Pokemon");
-		System.out.println("Pokemon Number , Type, Stage, Experience, HP, Energy,EnergyColour,Status \n ");
+		System.out.println("PokeNum , Type					, Stage, Experience, HP, Energy,EnergyColour,Status \n ");
 		for(PokemonCard p : hand1) {
 			System.out.printf("%d	%s \t %d \t %d \t %d \t %d \t %s \t %s \t \n",hand1.indexOf(p)+1, p.getClass(),p.getStage(),p.getExperience(),p.getHP(),p.getEnergy(),p.getEnergyColour(),p.getStatus());
 		}
 		
 		System.out.println("Player 2 Pokemon");
-		System.out.println("Pokemon Number , Type, Stage, Experience, HP, Energy,EnergyColour,Status \n ");
+		System.out.println("PokeNum , Type					, Stage, Experience, HP, Energy,EnergyColour,Status \n ");
 		
 		for(PokemonCard i : hand2) {
 			System.out.printf("%d	%s \t %d \t %d \t %d \t %d \t %s \t %s \t \n",hand2.indexOf(i)+1, i.getClass(),i.getStage(),i.getExperience(),i.getHP(),i.getEnergy(),i.getEnergyColour(),i.getStatus());
@@ -86,7 +88,7 @@ public class Game {
 		p2.setnoOfCard(6);
 		p2.setHand();
 		hand2 = p2.getHand();
-		displayCards();
+		
 		
 		
 	}
@@ -102,6 +104,7 @@ public class Game {
 	
 	public void chooseOption(Player player, Player comparePlayer) {
 		while (true) {
+		displayCards();
 		System.out.println("Option 1: Attack");
 		System.out.println("Option 2: Recharge");
 		System.out.println("Option 3: Train");
@@ -110,8 +113,13 @@ public class Game {
 		System.out.println();
 		
 		System.out.print("Choose Pokemon: ");
-		int i = input.nextInt() -1 ;
+		int i = (input.nextInt() -1) ;
+		
 		PokemonCard poke1 = hand1.get(i);
+		PokemonCard pokex = hand1.get(i);
+		if (token%2==0) {
+			 pokex = hand2.get(i);
+		}
 		System.out.println();
 		if (checkStatus(poke1)==false) {
 				System.out.print(", please choose another Pokemon.");
@@ -124,7 +132,7 @@ public class Game {
 				case 1: //Attack
 					//sigh
 					System.out.print("Attack Pokemon: ");
-					int j = input.nextInt() -1;
+					int j = (input.nextInt() -1);
 					PokemonCard poke2 = hand2.get(j);
 					System.out.println();
 					if (token%2==1) {
@@ -133,17 +141,19 @@ public class Game {
 					else {
 						attackPokemon(hand2,hand1,poke1,poke2);
 					}
+					token+=1;
 					break;
 				
 				case 2: //Recharge
-					//drawRechargeCard
-					RechargeCardDeck.deal();
+					rechargepokemon(pokex);
+					token+=1;
+					
 					break;
 				
 				case 3: //Train
-					//sigh
-					//Pokemon experience + 1
-					//Energy -5
+					pokex.Train();
+					System.out.println("Pokemon TRAINED!");
+					token+=1;
 					break;
 					
 				default:
@@ -240,10 +250,10 @@ public class Game {
 			damagept=0;
 		}
 		
-		System.out.print("HitPoint for Pokemon " + defendhand.indexOf(j)+1);
+		System.out.printf("HitPoint for Pokemon %d ", (defendhand.indexOf(j)+1));
 		System.out.printf(" damaged by %d", damagept);
-		System.out.print("Energy for Pokemon " + attackhand.indexOf(i)+1);
-		System.out.printf(" reduced by %d", energyused);
+		System.out.printf("Energy for Pokemon " + (attackhand.indexOf(i)+1));
+		System.out.printf(" reduced by %d\n", energyused);
 		i.Attack(j, damagept,energyused);
 		//player setHP(reducept);
 		//player experience(1);
@@ -271,6 +281,21 @@ public class Game {
 		{
 			return false;
 		}
+	}
+	
+	public void rechargepokemon( PokemonCard pokemon) {
+		
+			if (pokemon.getEnergyColour().equals(RechargeCardDeck.deal()) || pokemon.getEnergyColour().equals("Colourless")) {
+				pokemon.Recharge();
+				System.out.println("Recharge sucessful!");
+				}
+			else {
+				System.out.println("Recharge Failed");
+			
+			}
+		
+		
+		
 	}
 
 }

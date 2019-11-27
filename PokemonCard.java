@@ -43,7 +43,7 @@ public class PokemonCard {
 
 
 	public void setHP(int hP) {
-		HP += hP;
+		this.HP = hP;
 	}
 
 
@@ -81,15 +81,16 @@ public class PokemonCard {
 		int newHP = (DefendPoke.getHP() - AttackScore);
 		DefendPoke.setHP(newHP);
 		this.setEnergy(energyused);
+		this.setExperience(1);
 		
 	}
 	
-	public void Train(PokemonCard TrainedPoke) {
-		TrainedPoke.setEnergy(-5);
-		TrainedPoke.setExperience(1);
+	public void Train() {
+		this.setEnergy(-5);
+		this.setExperience(1);
 	}
-	public void Recharge(PokemonCard RechargePoke) {
-		RechargePoke.setEnergy(5);
+	public void Recharge() {
+		this.setEnergy(5);
 		
 	}
 

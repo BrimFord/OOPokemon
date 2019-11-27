@@ -7,7 +7,7 @@ public class RechargeCardDeck {
 	
 	public static String deal() {
 		int card = randint.nextInt(Colours.length);
-		return Colours[card-1];
+		return Colours[card];
 		
 		
 		
