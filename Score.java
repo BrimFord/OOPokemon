@@ -5,15 +5,15 @@ public class Score{
 	
 	private static Scanner input;
 	private Formatter output;
-	private String score;
+	private int score;
 	private ArrayList<Player> playerList = new ArrayList<Player>(10);
 	private ArrayList<Integer> scoreList = new ArrayList<Integer>(10);
 	
-	public void setScore(String score) {
-		score += 1;
+	public void setScore(int score) {
+		score += score;
 	}
 
-	public String getScore() {
+	public int getScore() {
 		return score;
 	}
 	
