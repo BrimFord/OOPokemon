@@ -26,3 +26,4 @@ private int RSTPoint = 1;
 		return String.format("DefendingPokemon %s RSTPoint=%s\n",super.toString(), RSTPoint);
 	}
 	
+}

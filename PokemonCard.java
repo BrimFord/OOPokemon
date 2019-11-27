@@ -33,7 +33,7 @@ public class PokemonCard {
 
 
 	public void setExperience(int experience) {
-		Experience += experience;
+		Experience = experience;
 	}
 
 
@@ -81,16 +81,16 @@ public class PokemonCard {
 		int newHP = (DefendPoke.getHP() - AttackScore);
 		DefendPoke.setHP(newHP);
 		this.setEnergy(energyused);
-		this.setExperience(1);
+
 		
 	}
 	
 	public void Train() {
 		this.setEnergy(-5);
-		this.setExperience(1);
+		this.setExperience(+1);
 	}
 	public void Recharge() {
-		this.setEnergy(5);
+		this.setEnergy(+5);
 		
 	}
 
@@ -107,3 +107,4 @@ public class PokemonCard {
 	
 
 }
+

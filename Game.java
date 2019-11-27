@@ -25,7 +25,6 @@ public class Game {
 		p2.setName(input.next());
 		System.out.println();
 		
-		
 		while (choice==0) {
 			System.out.println("Choose option:");
 			System.out.println("\t1. Start game");
@@ -41,12 +40,13 @@ public class Game {
 					while (checkWin(p1,p2)==false || checkWin(p2,p1)==false) {
 						chooseOption(p1,p2);
 						checkWin(p1,p2);
+			
 						chooseOption(p2,p1);
 						checkWin(p2,p1);
 					}
 					break;
 				case 2:
-					//Score.loadScore();
+					Score.loadScore();
 					break;
 				
 				default:
@@ -57,18 +57,18 @@ public class Game {
 		}
 	}
 	public void displayCards() {
-		
+		System.out.println();
 		System.out.println("Player 1 Pokemon");
-		System.out.println("PokeNum , Type					, Stage, Experience, HP, Energy,EnergyColour,Status \n ");
+		System.out.println("PokeNum  	Type	  	Stage Experience  HP 	Energy	 Status \tEnergyColour \n ");
 		for(PokemonCard p : hand1) {
-			System.out.printf("%d	%s \t %d \t %d \t %d \t %d \t %s \t %s \t \n",hand1.indexOf(p)+1, p.getClass(),p.getStage(),p.getExperience(),p.getHP(),p.getEnergy(),p.getEnergyColour(),p.getStatus());
+			System.out.printf("%d	%s \t %d \t %d \t %d \t %d \t %s \t %s \t \n",hand1.indexOf(p)+1, p.getClass(),p.getStage(),p.getExperience(),p.getHP(),p.getEnergy(),p.getStatus(),p.getEnergyColour());
 		}
-		
+		System.out.println();
 		System.out.println("Player 2 Pokemon");
-		System.out.println("PokeNum , Type					, Stage, Experience, HP, Energy,EnergyColour,Status \n ");
+		System.out.println("PokeNum  	Type	  	Stage Experience  HP 	Energy	 Status \tEnergyColour \n ");
 		
 		for(PokemonCard i : hand2) {
-			System.out.printf("%d	%s \t %d \t %d \t %d \t %d \t %s \t %s \t \n",hand2.indexOf(i)+1, i.getClass(),i.getStage(),i.getExperience(),i.getHP(),i.getEnergy(),i.getEnergyColour(),i.getStatus());
+			System.out.printf("%d	%s \t %d \t %d \t %d \t %d \t %s \t %s \t \n",hand2.indexOf(i)+1, i.getClass(),i.getStage(),i.getExperience(),i.getHP(),i.getEnergy(),i.getStatus(),i.getEnergyColour());
 		}
 		
 		
@@ -83,7 +83,7 @@ public class Game {
 		p1.setnoOfCard(6);
 		p1.setHand();
 		hand1 = p1.getHand();
-		System.out.printf("%s",p1.getHand());
+		
 		System.out.println("Drawing the card for Player 2...");
 		p2.setnoOfCard(6);
 		p2.setHand();
@@ -94,17 +94,12 @@ public class Game {
 	}
 		
 		
-			
-		
-			
-			
-			
-		
-	
-	
 	public void chooseOption(Player player, Player comparePlayer) {
 		while (true) {
+		System.out.println();
+		System.out.println("Player " + player.getName() + "'s turn!");
 		displayCards();
+		System.out.println();
 		System.out.println("Option 1: Attack");
 		System.out.println("Option 2: Recharge");
 		System.out.println("Option 3: Train");
@@ -121,46 +116,69 @@ public class Game {
 			 pokex = hand2.get(i);
 		}
 		System.out.println();
-		if (checkStatus(poke1)==false) {
-				System.out.print(", please choose another Pokemon.");
-				break;
-		}
-		else 
-		{
+
 			switch(option)
 			{
 				case 1: //Attack
-					//sigh
+					if (checkStatus(pokex)==false || pokex.getStatus()=="Idle") {
+						System.out.print("Pokemon is in idle, please choose another Pokemon.");
+						continue;
+						}
+					
+					while (true) {
 					System.out.print("Attack Pokemon: ");
 					int j = (input.nextInt() -1);
-					PokemonCard poke2 = hand2.get(j);
 					System.out.println();
-					if (token%2==1) {
-					attackPokemon(hand1,hand2,poke1,poke2);
+					PokemonCard poke2 = hand2.get(j);
+					PokemonCard pokey = hand2.get(j);
+					if (pokey.getStatus()=="-----") {
+						System.out.print("please choose another Pokemon.");
+						continue;
+						}
+		
+						if (token%2==1) {
+						attackPokemon(hand1,hand2,poke1,poke2,p1,p2);
+						}
+						else {
+							attackPokemon(hand2,hand1,poke2,poke1,p2,p1);
+						}
+						token+=1;
+					break;
 					}
-					else {
-						attackPokemon(hand2,hand1,poke1,poke2);
-					}
-					token+=1;
 					break;
 				
 				case 2: //Recharge
+					if (pokex.getStatus()=="-----") {
+						System.out.print("Pokemon has been defeated, please choose another Pokemon.");
+						continue;
+						}
 					rechargepokemon(pokex);
-					token+=1;
 					
+					token+=1;
 					break;
 				
 				case 3: //Train
+					if (pokex.getStatus()=="-----") {
+						System.out.print("Pokemon has been defeated, please choose another Pokemon.");
+						continue;
+						}
 					pokex.Train();
 					System.out.println("Pokemon TRAINED!");
+					if (pokex.getExperience() > 20){
+						
+						pokex.setStage(1);
+						pokex.setExperience(0);
+						pokex.setHP(pokex.getHP()*2);
+					}
+					
 					token+=1;
 					break;
 					
 				default:
-					System.out.println("Invalid choicce!\n");
-				
+					System.out.println("Invalid choice!\n");
+					continue;
 			}
-		}
+			break;
 		}
 	}
 	
@@ -177,7 +195,6 @@ public class Game {
 	}
 	
 	public boolean comparePokemon(PokemonCard i, PokemonCard j) {
-		checkStatus(j);
 		
 		if ((j instanceof AttackingPokemon) && (i instanceof AttackingPokemon)) {  //|| get type equal
 			return true;
@@ -202,11 +219,9 @@ public class Game {
 			return false;
 		}
 		
-		//else return false;
 	}
 	
-	public void attackPokemon(ArrayList attackhand, ArrayList defendhand,PokemonCard i, PokemonCard j) {
-		//sigh cast pokemon
+	public void attackPokemon(ArrayList attackhand, ArrayList defendhand, PokemonCard i, PokemonCard j, Player p, Player cp) {
 		int energyused = -1;
 		int multiplier = 1;
 		int reducept=0;
@@ -223,25 +238,26 @@ public class Game {
 		if (i instanceof AttackingPokemon) {
 			AttackingPokemon AttackPoke =(AttackingPokemon) i;
 			if (coin()) {
+				System.out.println("[Flip a coin: head] Attack point is " + AttackPoke.getATKPoint());
 				damagept = AttackPoke.getATKPoint();
 			}
 			}
-		else if (i instanceof FairyPokemon && coin()) {
-			System.out.println("[Flip a coin: head] Pokemon " + j + " is poisoned");
+		else if (i instanceof FairyPokemon && coin()==true) {
+			System.out.println("[Flip a coin: head] Pokemon " + (defendhand.indexOf(j)+1) + " is poisoned");
 			j.setStatus("Poisoned");
 		}
 		else if (i instanceof FairyPokemon && coin()==false) {
-			System.out.println("[Flip a coin: tail] Pokemon " + j + " is paralyzed");
+			System.out.println("[Flip a coin: tail] Pokemon " + (defendhand.indexOf(j)+1) + " is paralyzed");
 			j.setStatus("Paralyzed");
 			
 		}
 		
-		if (j.getStatus().equals("Poisoned") ||(j.getStatus().equals("Paralyzed"))) {
+		if (j.getStatus().equals("Poisoned") || (j.getStatus().equals("Paralyzed"))) {
 			multiplier *= 2;}
 		if (j instanceof DefendingPokemon) { 
 			DefendingPokemon DefendPoke = (DefendingPokemon) j;
 			if (coin()) {
-				System.out.println("[Flip a coin: head] resistance point is getresistancept");
+				System.out.println("[Flip a coin: head] resistance point is " + DefendPoke.getRSTPoint());
 				reducept =  DefendPoke.getRSTPoint();
 						}
 			}
@@ -252,16 +268,38 @@ public class Game {
 		
 		System.out.printf("HitPoint for Pokemon %d ", (defendhand.indexOf(j)+1));
 		System.out.printf(" damaged by %d", damagept);
+		System.out.println();
 		System.out.printf("Energy for Pokemon " + (attackhand.indexOf(i)+1));
 		System.out.printf(" reduced by %d\n", energyused);
 		i.Attack(j, damagept,energyused);
-		//player setHP(reducept);
-		//player experience(1);
-		//if (player experience > 20){
-			//set stage(1);
-			//set experience(0);
-			//attackpt/resistancept *2;
-			//hitpoint * 2; } */
+		i.setExperience(i.getExperience()+1);
+		
+		if (i.getHP() < 1) {
+			i.setHP(0);
+			i.setStatus("-----");
+			p.setnoOfCard(p.getnoOfCard()-1);
+		}
+		
+		if (i.getEnergy() < 1) {
+			i.setEnergy(0);
+			i.setStatus("Idle");
+		}
+		
+		if (i.getExperience() > 20){
+			i.setStage(1);
+			i.setExperience(0);
+			i.setHP(i.getHP()*2);
+			
+			if (i instanceof AttackingPokemon) {
+				AttackingPokemon AttackPoke = (AttackingPokemon) i;
+				AttackPoke.setATKPoint(AttackPoke.getATKPoint()*2);
+			}
+			else if (i instanceof DefendingPokemon) { 
+				DefendingPokemon DefendPoke = (DefendingPokemon) i;
+				DefendPoke.setRSTPoint(DefendPoke.getRSTPoint()*2);
+
+			}
+		}
 }
 
 
@@ -283,19 +321,23 @@ public class Game {
 		}
 	}
 	
-	public void rechargepokemon( PokemonCard pokemon) {
-		
-			if (pokemon.getEnergyColour().equals(RechargeCardDeck.deal()) || pokemon.getEnergyColour().equals("Colourless")) {
+	public void rechargepokemon(PokemonCard pokemon) {
+			String color = RechargeCardDeck.deal();
+			
+			if (pokemon.getEnergyColour().equals(color) || pokemon.getEnergyColour().equals("Colourless")) {
 				pokemon.Recharge();
+				System.out.printf("Draw card... Color drawn: %s", color);
+				System.out.println();
 				System.out.println("Recharge sucessful!");
 				}
 			else {
+				System.out.printf("Draw card... Color drawn: %s", color);
+				System.out.println();
 				System.out.println("Recharge Failed");
 			
 			}
 		
-		
-		
+
 	}
 
 }
