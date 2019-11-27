@@ -29,32 +29,6 @@ public class PokemonCardDeck  {
 		cards.add(new FairyPokemon(0,0,51,32,"Yellow","Active"));
 		cards.add(new FairyPokemon(0,0,52,33,"Colourless","Active"));
 		
-		
-		
-		
-		/*
-		cards.add(new AttackingPokemon(0, 0, 54, 50, "Red", 2,"Active",null));
-		cards.add(new PokemonCard("Attacking", 0, 0, 79, 36, "Yellow", 3, null, "Active"));
-		cards.add(new PokemonCard("Attacking", 0, 0, 75, 44, "Colourless", 4, null, "Active"));
-		cards.add(new PokemonCard("Attacking", 0, 0, 60, 37, "Blue", 5, null, "Active"));
-		cards.add(new PokemonCard("Attacking", 0, 0, 55, 47, "Colourless", 3, null, "Active"));
-		cards.add(new PokemonCard("Attacking", 0, 0, 73, 28, "Yellow", 2, null, "Active"));
-		cards.add(new PokemonCard("Attacking", 0, 0, 68, 33, "Blue", 3, null, "Active"));
-		cards.add(new PokemonCard("Attacking", 0, 0, 61, 37, "Red", 4, null, "Active"));
-		cards.add(new PokemonCard("Attacking", 0, 0, 58, 43, "Yellow", 5, null, "Active"));
-		cards.add(new PokemonCard("Defending", 0, 0, 56, 46, "Red", null, 1, "Active"));
-		cards.add(new PokemonCard("Defending", 0, 0, 68, 31, "Blue", null, 2, "Active"));
-		cards.add(new PokemonCard("Defending", 0, 0, 75, 28, "Colourless", null, 3, "Active"));
-		cards.add(new PokemonCard("Defending", 0, 0, 71, 20, "Yellow", null, 2, "Active"));
-		cards.add(new PokemonCard("Defending", 0, 0, 68, 35, "Red", null, 1, "Active"));
-		cards.add(new PokemonCard("Defending", 0, 0, 51, 49, "Blue", null, 2, "Active"));
-		cards.add(new PokemonCard("Defending", 0, 0, 67, 21, "Yellow", null, 3, "Active"));
-		cards.add(new PokemonCard("Fairy", 0, 0, 76, 25, "Colourless", null, null, "Active"));
-		cards.add(new PokemonCard("Fairy", 0, 0, 63, 38, "Yellow", null, null, "Active"));
-		cards.add(new PokemonCard("Fairy", 0, 0, 58, 44, "Blue", null, null, "Active"));
-		cards.add(new PokemonCard("Fairy", 0, 0, 63, 37, "Red", null, null, "Active"));
-		*/
-		
 	}
 	
 
@@ -62,14 +36,40 @@ public class PokemonCardDeck  {
 	
 	public static ArrayList deal() {
 		ArrayList <PokemonCard> newhand = new ArrayList();
-		ArrayList <PokemonCard> currentdeck = getDeck();
-		for(char i=1; i <= 6; i++) {
-			PokemonCard dealed = currentdeck.get(i);
-			newhand.add(dealed);
-			currentdeck.remove(i);
+		ArrayList <PokemonCard> currentdeck = getDeck(); 
+		int i = 0;
+		int ii = 0;
+		int j = 0;
+		int jj = 0;
+		int k = 0;
 		
-			//check type condition ;(
+		while (i < 2) {
+			PokemonCard dealed = currentdeck.get(ii);
+			if (dealed instanceof AttackingPokemon) {
+				AttackingPokemon AttackPoke = (AttackingPokemon) dealed;
+				newhand.add(AttackPoke);
+				currentdeck.remove(ii);
+				i+=1;
+			}
+			ii+=1;
 		}
+		while (j < 1) {
+			PokemonCard dealed = currentdeck.get(jj);
+			if (dealed instanceof DefendingPokemon) {
+				DefendingPokemon AttackPoke = (DefendingPokemon) dealed;
+				newhand.add(AttackPoke);
+				currentdeck.remove(jj);
+				j+=1;
+			}
+			jj+=1;
+		}
+		while (k < 3) {
+				PokemonCard dealed = currentdeck.get(k);
+				newhand.add(dealed);
+				currentdeck.remove(k);
+				k+=1;
+		}
+		
 		return newhand;
 	}
 	
@@ -77,9 +77,6 @@ public class PokemonCardDeck  {
 		return cards;
 	}
 	
-
-
-
 
 	public void shuffle() {
 		Collections.shuffle(cards);
