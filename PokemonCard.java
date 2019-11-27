@@ -5,6 +5,7 @@ public class PokemonCard {
 	private int Energy;
 	private String EnergyColour;
 	private String Status;
+	private int idlecount =0;
 	
 	
 	public PokemonCard(int stage, int experience, int HP, int energy, String energyColour, String status) {
@@ -93,7 +94,22 @@ public class PokemonCard {
 		this.setEnergy(+5);
 		
 	}
-
+	public void setIdleCount(int idle) {
+		this.idlecount += idle;
+	}
+	public int getIdleCount() {
+		return this.idlecount;
+	}
+	
+	public void RefreshIdleCounter() {
+		if (this.getIdleCount() >0) {
+			this.setIdleCount(-1);
+		}
+		if (this.getIdleCount()==0 && (this.getStatus().equals("Poisoned") || this.getStatus().equals("Paralyzed"))) {
+			this.setStatus("Active");
+			
+		}
+	}
 
 	@Override
 	public String toString() {
@@ -107,4 +123,5 @@ public class PokemonCard {
 	
 
 }
+
 
