@@ -4,30 +4,30 @@ import java.util.*;
 public class Score{
 	
 	private static Scanner input;
-	private Formatter output;
-	private int score;
-	private ArrayList<Player> playerList = new ArrayList<Player>(10);
-	private ArrayList<Integer> scoreList = new ArrayList<Integer>(10);
+	private static Formatter output;
+	private static int score;
+	private static ArrayList<Player> playerList = new ArrayList<Player>(10);
+	private static ArrayList<Integer> scoreList = new ArrayList<Integer>(10);
 	
-	public void setScore(int score) {
+	public static void setScore(int score) {
 		score += score;
 	}
 
-	public int getScore() {
+	public static int getScore() {
 		return score;
 	}
 	
 	//load all the data from score file by calling the openInputFile(), readScoreFile() and closeInputFile() methods
 	public static void loadScore() {
-		input = openInputFile("score.txt");
-		//readScoreFile();
+		input = openInputFile("C:\\Users\\user\\eclipse-workspace\\Assignment\\src\\score.txt");
+		readScoreFile();
 		closeInputFile(input);
 	}
 	
 	//store back all the data to score file by calling the openOutputFile(), writeScoreFile() and closeOutputFile() methods
 	public void storeScore() {
-		output = openOutputFile("score.txt");
-		//writeScoreFile();
+		output = openOutputFile("C:\\Users\\user\\eclipse-workspace\\Assignment\\src\\score.txt");
+		writeScoreFile();
 		closeOutputFile(output);
 	}
 	
@@ -71,14 +71,14 @@ public class Score{
 	
 	//read every line in the score.txt file
 	//add the winner and score to the scoreList
-	public void readScoreFile(Player name, int score) {
+	public static void readScoreFile() {
 		try {
 			while(input.hasNext()) {
 				for(int s:scoreList) {
 					if (score < s){
 						playerList.remove(9);
 						scoreList.remove(9);
-						playerList.add(name);
+						playerList.add(Player.getName());
 						scoreList.add(score);
 					}
 				}
@@ -98,9 +98,9 @@ public class Score{
 	
 	//loop each of the record in array list and 
 	//write it into the score.txt file
-	public void writeScoreFile() {
+	public static void writeScoreFile() {
 		for (int s=0; s < 10; s++) {
-			output.format("%s /t %d", playerList.get(s), scoreList.get(s));
+			output.format("%s \t %d\n", playerList.get(s), scoreList.get(s));
 		}
 	}
 	
