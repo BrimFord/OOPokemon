@@ -93,7 +93,7 @@ public class Game {
 		}
 		
 	
-	public void drawCard() {
+	public void drawCard() { //a method to draw 6 cards for both players
 		
 		Deck1.deck();
 		Deck1.shuffle();	
@@ -200,7 +200,7 @@ public class Game {
 		}
 	}
 	
-	public boolean coin() {
+	public boolean coin() { //flip a coin, return true for head, false for tail
 		Random rand = new Random();
 		int randomInt = rand.nextInt(1) + 1;
 		if (randomInt == 1) 
@@ -212,7 +212,7 @@ public class Game {
 		}
 	}
 	
-	public boolean comparePokemon(PokemonCard i, PokemonCard j) {
+	public boolean comparePokemon(PokemonCard i, PokemonCard j) { //compare pokemon type
 		
 		if ((j instanceof AttackingPokemon) && (i instanceof AttackingPokemon)) {  //|| get type equal
 			return true;
@@ -229,7 +229,7 @@ public class Game {
 		}
 	}
 	
-	public boolean checkStatus(PokemonCard i) {
+	public boolean checkStatus(PokemonCard i) { //check whether if pokemon chosen is active
 		if (i.getStatus().equals("Active")){
 			return true;
 		}
@@ -244,6 +244,8 @@ public class Game {
 		int multiplier = 1;
 		int reducept=0;
 		int damagept=1;
+
+		
 		if (comparePokemon(i,j)) {
 			System.out.println("Weakness: on, double attack point");
 			multiplier *= 2;
@@ -262,13 +264,16 @@ public class Game {
 			}
 		else if (i instanceof FairyPokemon && coin()==true) {
 			System.out.println("[Flip a coin: head] Pokemon " + (defendhand.indexOf(j)+1) + " is poisoned");
-			j.setStatus("Poisoned");
+			j.setStatus("Poisoned"); //idle for 1 game
+
 		}
 		else if (i instanceof FairyPokemon && coin()==false) {
 			System.out.println("[Flip a coin: tail] Pokemon " + (defendhand.indexOf(j)+1) + " is paralyzed");
-			j.setStatus("Paralyzed");
+			j.setStatus("Paralyzed"); //idle for 2 games
+
 			
 		}
+		
 		
 		if (j.getStatus().equals("Poisoned") || (j.getStatus().equals("Paralyzed"))) {
 			multiplier *= 2;}
@@ -323,14 +328,16 @@ public class Game {
 
 	
 	public boolean checkWin(Player player, Player comparePlayer) {
-		if (comparePlayer.getnoOfCard() < 3) {
-			System.out.print("Player " + player + " has successfully defeated three Pokemon of Player " + comparePlayer
-					+ ". Player " + player + " is the winner");
+		if (comparePlayer.getnoOfCard() < 4) {
+			System.out.println();
+			System.out.println("Player " + player.getName() + " has successfully defeated three Pokemons of Player " + comparePlayer.getName()
+					+ ". Player " + player.getName() + " is the winner!");
 			return true;
 		}
-		else if (player.getnoOfCard() < 3) {
-			System.out.print("Player " + comparePlayer + " has successfully defeated three Pokemon of Player " + player
-					+ ". Player " + comparePlayer + " is the winner");
+		else if (player.getnoOfCard() < 4) {
+			System.out.println();
+			System.out.println("Player " + comparePlayer.getName() + " has successfully defeated three Pokemons of Player " + player.getName()
+					+ ". Player " + comparePlayer.getName() + " is the winner!");
 			return true;
 		}
 		else
@@ -344,6 +351,8 @@ public class Game {
 			
 			if (pokemon.getEnergyColour().equals(color) || pokemon.getEnergyColour().equals("Colourless")) {
 				pokemon.Recharge();
+				if (pokemon.getStatus()=="Idle") {
+					pokemon.setStatus("Active");}
 				System.out.printf("Draw card... Color drawn: %s", color);
 				System.out.println();
 				System.out.println("Recharge sucessful!");
@@ -359,3 +368,4 @@ public class Game {
 	}
 
 }
+
