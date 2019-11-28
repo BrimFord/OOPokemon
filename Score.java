@@ -132,7 +132,7 @@ public class Score{
 					if (score < s){
 						playerList.remove(9);
 						scoreList.remove(9);
-						playerList.add(Player.getName());
+						playerList.add();
 						scoreList.add(score);
 					}
 				}
@@ -157,6 +157,7 @@ public class Score{
 	public static void writeScoreFile() {
 		for (int s=0; s < 10; s++) {
 			output.format("%s \t %d\n", playerList.get(s), scoreList.get(s));
+			Collections.sort(scoreList, Collections.reverseOrder());
 		}
 	}
 	
