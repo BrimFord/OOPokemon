@@ -4,7 +4,7 @@ import java.util.*;
  * Date: 28-Nov-2019
  * This is a class used to manage the scores in the game
  * 
- * @author Group 35 (Ng Yee Jien, Ibrahim Keith Harold Ford, Choy Ee Lee, Teo Yun Xian)
+ * @author Group 25 (Ng Yee Jien, Ibrahim Keith Harold Ford, Choy Ee Lee, Teo Yun Xian)
  * @version 1.0
  *
  *
