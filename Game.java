@@ -1,3 +1,4 @@
+
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
@@ -6,11 +7,13 @@ public class Game {
 	private static int token =1; // to determine who is playing 
 	private Player p1 = new Player();
 	private Player p2 = new Player();
+	private Score s1 = new Score();
+	private Score s2 = new Score();
 	private RechargeCardDeck EnerDeck1 = new RechargeCardDeck();
 	private PokemonCardDeck Deck1 = new PokemonCardDeck();
 	private static ArrayList<PokemonCard> hand1 = new ArrayList();
 	private static ArrayList<PokemonCard> hand2 = new ArrayList();
-	
+
 
 	//deck
 	Scanner input = new Scanner(System.in);	
@@ -55,13 +58,6 @@ public class Game {
 		}
 	}
 	public void displayCards() { //a method for display for hands of both players 
-		if (token%2==0) {
-			System.out.println("Player 2's Turn!!!");
-		}
-		else {
-			System.out.println("Player 1's Turn!!!");
-		
-		}
 		System.out.println();
 		String type;
 		System.out.println("Player 1 Pokemon");
@@ -109,6 +105,7 @@ public class Game {
 		p1.setnoOfCard(6);
 		p1.setHand();
 		hand1 = p1.getHand();
+		
 		System.out.println("Drawing the card for Player 2...");
 		p2.setnoOfCard(6);
 		p2.setHand();
@@ -128,6 +125,7 @@ public class Game {
 		}
 		while (true) {
 		System.out.println();
+		System.out.println("Player " + player.getName() + "'s turn!");
 		displayCards();
 		System.out.println();
 		System.out.println("Option 1: Attack");
@@ -166,10 +164,10 @@ public class Game {
 						}
 		
 						if (token%2==1) {
-						attackPokemon(hand1,hand2,pokex,poke2,p1,p2);
+						attackPokemon(hand1,hand2,pokex,poke2,p1,p2,s1);
 						}
 						else {
-							attackPokemon(hand2,hand1,pokex,poke2,p2,p1);
+							attackPokemon(hand2,hand1,pokex,poke2,p2,p1,s2);
 						}
 						token+=1;
 					break;
@@ -250,7 +248,7 @@ public class Game {
 		
 	}
 	
-	public void attackPokemon(ArrayList attackhand, ArrayList defendhand, PokemonCard i, PokemonCard j, Player p, Player cp) {
+	public void attackPokemon(ArrayList attackhand, ArrayList defendhand, PokemonCard i, PokemonCard j, Player p, Player cp, Score s) {
 		int energyused = -1;
 		int multiplier = 1;
 		int reducept=0;
@@ -293,6 +291,9 @@ public class Game {
 				reducept =  DefendPoke.getRSTPoint();
 						}
 			}
+		s.setScore(1);
+		
+		p.setScore(s);
 		damagept = (damagept * multiplier) - reducept;
 		if (damagept < 0) {
 			damagept=0;
@@ -306,10 +307,10 @@ public class Game {
 		i.Attack(j, damagept,energyused);
 		i.setExperience(i.getExperience()+1);
 		
-		if (i.getHP() < 1) {
-			i.setHP(0);
-			i.setStatus("-----");
-			p.setnoOfCard(p.getnoOfCard()-1);
+		if (j.getHP() < 1) {
+			j.setHP(0);
+			j.setStatus("-----");
+			cp.setnoOfCard(cp.getnoOfCard()-1);
 		}
 		
 		if (i.getEnergy() < 1) {
@@ -362,7 +363,7 @@ public class Game {
 		if (pokemon.getEnergyColour().equals(color) || pokemon.getEnergyColour().equals("Colourless")) {
 			pokemon.Recharge();
 			if (pokemon.getStatus()=="Idle") {
-				pokemon.setStatus("Active");}
+				pokemon.setStatus("Active");}// I think this one no need?
 			System.out.printf("Draw card... Color drawn: %s", color);
 			System.out.println();
 			System.out.println("Recharge sucessful!");
@@ -379,4 +380,3 @@ public class Game {
 	}
 
 }
-
