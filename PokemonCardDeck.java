@@ -1,11 +1,25 @@
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
-
+/**
+ * Date: 28-Nov-2019
+ * This is a class used to manage the 20 set of Pokemon Cards in the game
+ * 
+ * @author Group 35 (Ng Yee Jien, Ibrahim Keith Harold Ford, Choy Ee Lee, Teo Yun Xian)
+ * @version 1.0
+ *
+ *
+ */
 public class PokemonCardDeck  {
+	/**
+	 * A set of 20 cards in the pokemon card deck
+	 */
 	private static ArrayList<PokemonCard> cards = new ArrayList<PokemonCard>();
 
 	
+	/**
+	 * This method generated a set of 20 cards to the cards list
+	 */
 	public void deck() {
 		
 		cards.add(new AttackingPokemon(0,0,54,50,"Red","Active",2));
@@ -34,6 +48,15 @@ public class PokemonCardDeck  {
 
 	
 	
+	/**
+	 * This method returns the 6 cards selected from the cards list
+	 * The 6 cards include a minimum of 2 atacking pokemons and 1 defending pokemon
+	 * 
+	 * newhand is the list containing the 6 cards generated
+	 * currentdeck is the list of 20 cards returned from the getDeck() method
+	 * 
+	 * @return the 6 cards generated in the newhand list
+	 */
 	public static ArrayList deal() {
 		ArrayList <PokemonCard> newhand = new ArrayList();
 		ArrayList <PokemonCard> currentdeck = getDeck(); 
@@ -43,7 +66,7 @@ public class PokemonCardDeck  {
 		int jj = 0;
 		int k = 0;
 		
-		while (i < 2) {
+		while (i < 2) { //deal at least 2 attacking pokemon
 			PokemonCard dealed = currentdeck.get(ii);
 			if (dealed instanceof AttackingPokemon) {
 				AttackingPokemon AttackPoke = (AttackingPokemon) dealed;
@@ -53,7 +76,7 @@ public class PokemonCardDeck  {
 			}
 			ii+=1;
 		}
-		while (j < 1) {
+		while (j < 1) { //deal at least 1 defending pokemon
 			PokemonCard dealed = currentdeck.get(jj);
 			if (dealed instanceof DefendingPokemon) {
 				DefendingPokemon AttackPoke = (DefendingPokemon) dealed;
@@ -63,7 +86,7 @@ public class PokemonCardDeck  {
 			}
 			jj+=1;
 		}
-		while (k < 3) {
+		while (k < 3) { //deal 3 more pekomen cards
 				PokemonCard dealed = currentdeck.get(k);
 				newhand.add(dealed);
 				currentdeck.remove(k);
@@ -73,11 +96,18 @@ public class PokemonCardDeck  {
 		return newhand;
 	}
 	
+	/**
+	 * This method returns the set of 20 cards generated in the cards list
+	 * @return the cards list containing 20 cards
+	 */
 	public static  ArrayList getDeck() {
 		return cards;
 	}
 	
 
+	/**
+	 * This method is called to shuffle the 20 cards before the cards are dealed in the game
+	 */
 	public void shuffle() {
 		Collections.shuffle(cards);
 	}
