@@ -1,7 +1,6 @@
 
-import java.util.ArrayList;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
+
 /**
  * Date: 28-Nov-2019
  * This is a class used to manage the Pokemon Cards in the game
@@ -58,42 +57,47 @@ public class Game {
 	 */
 	
 	public void start() {
-		int choice=0;
-		System.out.print("Key in the name for player 1: ");
-		p1.setName(input.next());
-		System.out.println();
-		System.out.print("Key in the name for player 2: ");
-		p2.setName(input.next());
-		System.out.println();
-		
-		while (choice==0) {
-			System.out.println("Choose option:");
-			System.out.println("\t1. Start game");
-			System.out.println("\t2. Display top 10 scores");
-			System.out.print("Option: ");
-			choice = input.nextInt();
+		try {
+			int choice=0;
+			System.out.print("Key in the name for player 1: ");
+			p1.setName(input.next());
+			System.out.println();
+			System.out.print("Key in the name for player 2: ");
+			p2.setName(input.next());
 			System.out.println();
 			
-			switch (choice)
-			{
-				case 1:
-					drawCard();
-					while (checkWin(p1,p2)==false || checkWin(p2,p1)==false) {
-						chooseOption(p1,p2);
-						checkWin(p1,p2);
-						chooseOption(p2,p1);
-						checkWin(p2,p1);
-					}
-					break;
-				case 2:
-					Score.loadScore();
-					break;
+			while (choice==0) {
+				System.out.println("Choose option:");
+				System.out.println("\t1. Start game");
+				System.out.println("\t2. Display top 10 scores");
+				System.out.print("Option: ");
+				choice = input.nextInt();
+				System.out.println();
 				
-				default:
-					System.out.println("Invalid choice!\n");
-					start();
+				switch (choice)
+				{
+					case 1:
+						drawCard();
+						while (checkWin(p1,p2)==false || checkWin(p2,p1)==false) {
+							chooseOption(p1,p2);
+							checkWin(p1,p2);
+							chooseOption(p2,p1);
+							checkWin(p2,p1);
+						}
+						break;
+					case 2:
+						Score.loadScore();
+						break;
+					
+					default:
+						System.out.println("Invalid choice!\n");
+						start();
+				}
 			}
-			
+		}
+		catch (InputMismatchException inputMismatchException){
+			System.out.println("Invalid input");
+			start();
 		}
 	}
 	
